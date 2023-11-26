@@ -11,6 +11,8 @@ def logout_view(request):
 
 class LoginView(View):
     def get(self, request):
+        if request.user.is_authenticated:
+            return redirect("main:home")
         return render(request, "auth/login.html")
 
     def post(self, request):
@@ -20,7 +22,7 @@ class LoginView(View):
             user = authenticate(request, phone_number=phone_number, password=password)
             if user is not None:
                 login(request, user)
-                return render(request, "auth/login.html")
+                return redirect("main:home")
         return render(request, "auth/login.html")
 
 

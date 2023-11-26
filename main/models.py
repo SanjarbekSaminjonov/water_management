@@ -78,6 +78,10 @@ class ChannelDevice(models.Model):
     def __str__(self):
         return f"{self.name} - {self.device_id}"
 
+    @property
+    def get_device_last_message(self):
+        return self.messages.last()
+
     class Meta:
         verbose_name = "Kanal qurilmasi"
         verbose_name_plural = "Kanal qurilmalari"
@@ -157,6 +161,7 @@ class ChannelMessage(models.Model):
         verbose_name="Suv hajmi (m3/s)",
         max_digits=12,
         decimal_places=2,
+        default=0,
     )
     bat = models.DecimalField(
         verbose_name="Batareya quvvat darajasi",
@@ -177,9 +182,15 @@ class ChannelMessage(models.Model):
         auto_now_add=True,
     )
 
-    def __str__(self):
-        return self.device.name
+    @property
+    def get_bat_percent(self):
+        if not self.bat or self.bat <= 3.8:
+            return 0
+        if self.bat >= 4.2:
+            return 100
+        return round(float(self.bat) / 4.2 * 100)
 
+    @property
     def get_water_height(self):
         return (
             self.device.full_height - self.h
@@ -187,8 +198,12 @@ class ChannelMessage(models.Model):
             else self.device.height
         )
 
+    @property
     def get_device_active(self):
         return timezone.now() - self.created_at < timedelta(days=1)
+
+    def __str__(self):
+        return self.device.name
 
     class Meta:
         verbose_name = "Kanal qurilmasi xabari"

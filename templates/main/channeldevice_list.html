@@ -33,83 +33,66 @@
         <a href="{% url 'main:channeldevices' %}" class="inline-flex items-center justify-center w-1/2 px-3 py-2 text-sm font-medium text-center text-white rounded-lg bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 sm:w-auto dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
           <svg class="w-5 h-5 mr-2 -ml-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
             <path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd"></path>
-          </svg>Qurilma qo'shish
+          </svg>
+          Qurilma qo'shish
         </a>
       </div>
     </div>
-    {% if not object_list %}
-      <div class="grid w-full grid-cols-1 gap-4 mt-4 xl:grid-cols-2 2xl:grid-cols-3">
-        <a href="/en/channels/KNNAVOI0021/" class="w-full sm:w-1/2 xl:w-1/3 p-2 rounded-md">
-          <div class="px-5 py-6 bg-white rounded-md shadow-sm border border-6 border-blue-600">
+    <div class="grid w-full grid-cols-1 gap-4 mt-4 xl:grid-cols-2 2xl:grid-cols-3">
+        {% for device in object_list %}
+        <a href="{% url 'main:channeldevice_detail' device.device_id %}" class="w-full sm:w-1/2 xl:w-1/3 p-2 rounded-md">
+          <div class="px-5 py-6 bg-white rounded-md shadow-sm border shadow">
             <div class="flex items-center justify-between">
-              <span class="text-xl font-semibold text-gray-700">Navoiy Xat...</span>
-              <span class="text-md font-semibold">ID: KNNAVOI0021</span>
+              <span class="text-xl font-semibold text-gray-700">{{device.name}}</span>
+              <span class="text-md font-semibold">ID: {{device.device_id}}</span>
             </div>
+            {% with last_message=device.get_device_last_message %}
+            {% if last_message %}
             <div class="text-gray-500 mt-1 flex item-center justify-between">
-              <span>Nov. 25, 2023, 9:01 a.m.</span>
-              <span>
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-green-700" viewBox="0 0 20 20" fill="currentColor">
-                  <path fill-rule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
-                </svg>
-              </span>
+              <span>{{last_message.created_at|default:"-"}}</span>
+              {% if last_message.get_device_active %}
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-green-500" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+              </svg>
+              {% else %}
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15 12H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+              </svg>
+              {% endif %}
             </div>
             <div>
               <div class="flex items-center flex-wrap mt-2">
                 <span class="mt-2 flex items-center px-3 py-1 mr-2 text-sm font-semibold text-gray-700 bg-gray-200 rounded-full">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1 text-green-700" viewBox="0 0 20 20" fill="currentColor">
+                  {% if last_message.is_charging %}
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1 text-green-500" viewBox="0 0 20 20" fill="currentColor">
                     <path fill-rule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z" clip-rule="evenodd"></path>
                   </svg>
-                  <span>3.80 volt</span>
+                  {% else %}
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1 text-red-500" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z" clip-rule="evenodd"></path>
+                  </svg>
+                  {% endif %}
+                  <span>{{last_message.get_bat_percent}} %</span>
                 </span>
                 <span class="mt-2 flex items-center px-3 py-1 mr-2 text-md font-semibold text-gray-700 bg-gray-200 rounded-full">
                   <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" viewBox="0 0 20 20" fill="currentColor">
                     <path d="M2 11a1 1 0 011-1h2a1 1 0 011 1v5a1 1 0 01-1 1H3a1 1 0 01-1-1v-5zM8 7a1 1 0 011-1h2a1 1 0 011 1v9a1 1 0 01-1 1H9a1 1 0 01-1-1V7zM14 4a1 1 0 011-1h2a1 1 0 011 1v12a1 1 0 01-1 1h-2a1 1 0 01-1-1V4z"></path>
                   </svg>
-                  <span>18</span>
+                  <span>{{last_message.net}}</span>
                 </span>
-                <span class="mt-2 px-3 py-1 mr-2 text-md font-semibold text-gray-700 bg-gray-200 rounded-full">6.90 sm</span>
-                <span class="mt-2 px-3 py-1 mr-2 text-md font-semibold text-gray-700 bg-gray-200 rounded-full">0.00 m<sup>3</sup>/s</span>
+                <span class="mt-2 px-3 py-1 mr-2 text-md font-semibold text-gray-700 bg-gray-200 rounded-full">{{last_message.get_water_height}} sm</span>
+                <span class="mt-2 px-3 py-1 mr-2 text-md font-semibold text-gray-700 bg-gray-200 rounded-full">{{last_message.water_volume}} m<sup>3</sup>/s</span>
               </div>
             </div>
+            {% else %}
+            <div class="text-gray-500 mt-5">Qurilmadan kelgan xabarlar mavjud emas</div>
+            {% endif %}
+            {% endwith %}
           </div>
         </a>
-        <a href="/en/channels/KNNAVOI0021/" class="w-full sm:w-1/2 xl:w-1/3 p-2 rounded-md">
-          <div class="px-5 py-6 bg-white rounded-md shadow-sm border-4 border-green-600">
-            <div class="flex items-center justify-between">
-              <span class="text-xl font-semibold text-gray-700">Navoiy Xat...</span>
-              <span class="text-md font-semibold">ID: KNNAVOI0021</span>
-            </div>
-            <div class="text-gray-500 mt-1 flex item-center justify-between">
-              <span>Nov. 25, 2023, 9:01 a.m.</span>
-              <span>
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-green-700" viewBox="0 0 20 20" fill="currentColor">
-                  <path fill-rule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
-                </svg>
-              </span>
-            </div>
-            <div>
-              <div class="flex items-center flex-wrap mt-2">
-                <span class="mt-2 flex items-center px-3 py-1 mr-2 text-sm font-semibold text-gray-700 bg-gray-200 rounded-full">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1 text-green-700" viewBox="0 0 20 20" fill="currentColor">
-                    <path fill-rule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z" clip-rule="evenodd"></path>
-                  </svg>
-                  <span>3.80 volt</span>
-                </span>
-                <span class="mt-2 flex items-center px-3 py-1 mr-2 text-md font-semibold text-gray-700 bg-gray-200 rounded-full">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" viewBox="0 0 20 20" fill="currentColor">
-                    <path d="M2 11a1 1 0 011-1h2a1 1 0 011 1v5a1 1 0 01-1 1H3a1 1 0 01-1-1v-5zM8 7a1 1 0 011-1h2a1 1 0 011 1v9a1 1 0 01-1 1H9a1 1 0 01-1-1V7zM14 4a1 1 0 011-1h2a1 1 0 011 1v12a1 1 0 01-1 1h-2a1 1 0 01-1-1V4z"></path>
-                  </svg>
-                  <span>18</span>
-                </span>
-                <span class="mt-2 px-3 py-1 mr-2 text-md font-semibold text-gray-700 bg-gray-200 rounded-full">6.90 sm</span>
-                <span class="mt-2 px-3 py-1 mr-2 text-md font-semibold text-gray-700 bg-gray-200 rounded-full">0.00 m<sup>3</sup>/s</span>
-              </div>
-            </div>
-          </div>
-        </a>
-      </div>
-    {% else %}
-      Sizda hali kanal qurilmalari yo'q
-    {% endif %}
+        {% empty %}
+        Sizda hali kanal qurilmalari yo'q
+        {% endfor %}
+    </div>
   </div>
 {% endblock %}
