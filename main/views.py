@@ -29,7 +29,13 @@ class ChannelDeviceDetailView(LoginRequiredMixin, generic.DetailView):
         messages = self.object.messages
         device_messages = messages.order_by("-created_at")[:cut]
         has_more = messages.count() > cut
-        context.update(device_messages=device_messages, has_more=has_more)
+        location = dict(
+            latitude=str(self.object.latitude),
+            longitude=str(self.object.longitude),
+        )
+        context.update(
+            device_messages=device_messages, has_more=has_more, location=location
+        )
         return context
 
 
