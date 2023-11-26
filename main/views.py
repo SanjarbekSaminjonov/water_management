@@ -46,3 +46,18 @@ class ChannelDeviceDeleteView(LoginRequiredMixin, generic.View):
         if qs.exists():
             qs.first().delete()
         return redirect("main:channeldevices")
+
+
+class ChannelDeviceVolumeTableView(LoginRequiredMixin, generic.DetailView):
+    slug_field = "device_id"
+    slug_url_kwarg = "device_id"
+    template_name = "main/channeldevice_volume_table.html"
+
+    def get_queryset(self):
+        return self.request.user.channel_devices.all()
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        volume_table = self.object.volume_tables.order_by("tens")
+        context.update(volume_table=volume_table)
+        return context

@@ -19,6 +19,11 @@ urlpatterns = [
         name="channeldevice_detail",
     ),
     path(
+        "channeldevices/<str:device_id>/volume-table/",
+        views.ChannelDeviceVolumeTableView.as_view(),
+        name="channeldevice_volume_table",
+    ),
+    path(
         "channeldevices/<str:device_id>/delete/",
         views.ChannelDeviceDeleteView.as_view(),
         name="channeldevice_delete",
