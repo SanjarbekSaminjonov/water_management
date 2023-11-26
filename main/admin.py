@@ -43,7 +43,7 @@ class ChannelDeviceVolumeTableAdmin(admin.ModelAdmin):
 
 @admin.register(ChannelMessage)
 class ChannelMessageAdmin(admin.ModelAdmin):
-    list_display = ("id", "device", "is_sent", "h", "water_volume")
+    list_display = ("id", "device", "h", "water_volume")
     list_display_links = ("id", "device")
     list_filter = ("device", "created_at")
     search_fields = ("device",)
