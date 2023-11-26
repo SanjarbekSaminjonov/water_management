@@ -1,4 +1,3 @@
-from typing import Any
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views import generic
 from django.shortcuts import redirect
@@ -24,7 +23,7 @@ class ChannelDeviceDetailView(LoginRequiredMixin, generic.DetailView):
     def get_queryset(self):
         return self.request.user.channel_devices.all()
 
-    def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
+    def get_context_data(self, **kwargs):
         cut = 10
         context = super().get_context_data(**kwargs)
         messages = self.object.messages
